@@ -31,3 +31,6 @@ coverage.xml
 # Docs build
 site/
 .jupyter_cache/
+
+# Data
+data/*
