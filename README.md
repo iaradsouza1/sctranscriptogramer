@@ -30,11 +30,59 @@ This package adapts that method to modern single-cell scale:
 Pre-alpha, under active development. The core windowing engine and its tests come first
 (see the project plan and `tests/`).
 
+## Installation
+
+Requires Python ≥ 3.10. The package is not on PyPI yet, so install it from GitHub.
+
+We recommend a fresh environment:
+
+```bash
+conda create -n sctranscriptogramer python=3.11
+conda activate sctranscriptogramer
+```
+
+Install the full single-cell + spatial workflow:
+
+```bash
+pip install "sctranscriptogramer[all] @ git+https://github.com/iaradsouza1/sctranscriptogramer.git"
+```
+
+Or install only the core (windowing, orderings, AnnData I/O) and add the extras you need:
+
+```bash
+pip install "git+https://github.com/iaradsouza1/sctranscriptogramer.git"
+```
+
+| Extra | Installs | Needed for |
+|---|---|---|
+| `sc` | `scanpy`, `metacells` | metacell aggregation (`pp.aggregate_metacells`) |
+| `de` | `edgepython` | differential / divergent systems (NB mixed model), TMM normalization |
+| `spatial` | `squidpy` | spatial datasets and graphs (the spatial analyses themselves don't need it) |
+| `enrich` | `gseapy` | GO / pathway enrichment (`tl.cluster_enrichment`) |
+| `ids` | `pybiomart`, `mygene` | gene ID → protein mapping (`map_to_protein`) |
+| `plot` | `matplotlib` | plotting (`pl.*`) |
+| `all` | everything above | the full workflow |
+
+For example, `pip install "sctranscriptogramer[sc,de] @ git+https://github.com/iaradsouza1/sctranscriptogramer.git"`.
+
+The STRING protein orderings (human, mouse, rat, yeast at scores 700/800/900) ship with the package, so
+no extra download is needed. Check the install:
+
+```python
+import sctranscriptogramer as sctg
+sctg.datasets.human_ordering(900)   # 12,396 ordered proteins
+```
+
+Example datasets used in the quickstart notebooks are not included in the repository.
+
 ## Development
 
 ```bash
+git clone https://github.com/iaradsouza1/sctranscriptogramer.git
+cd sctranscriptogramer
+conda create -n sctranscriptogramer python=3.11
 conda activate sctranscriptogramer
-pip install -e ".[dev]"
+pip install -e ".[all,dev]"
 pytest
 ```
 
